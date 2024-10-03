@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:14:49 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/08/21 08:20:41 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/10/03 18:49:10 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static char	*ft_read_to_leftover(int fd, char *leftover)
 {
     char *buff;
+    char *temp;
     int read_bytes;
 
     buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -24,13 +25,20 @@ static char	*ft_read_to_leftover(int fd, char *leftover)
     while(!ft_strchr(leftover, '\n') && read_bytes != 0)
     {
         read_bytes = read(fd, buff, BUFFER_SIZE);
-        if (read_bytes = -1)
+        if (read_bytes == -1)
         {
             free (buff);
             return NULL;
         }
         buff[read_bytes] = '\0';
-        leftover = ft_strjoin(leftover, buff);
+        
+        temp = ft_strjoin(leftover, buff);
+        if (!temp){
+            free(buff);
+            return NULL;
+        }
+        free(leftover);
+        leftover = temp;
     }
     free(buff);
     return (leftover);
@@ -44,7 +52,7 @@ char *get_next_line(int fd)
     if (fd < 0)
         return (NULL);
 
-    leftover = ft_read_to_leftover(int fd, char *leftover);
+    leftover = ft_read_to_leftover(fd, leftover);
     if (!leftover)
         return (NULL);
 

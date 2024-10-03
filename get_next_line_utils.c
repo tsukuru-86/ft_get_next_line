@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:43:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/09/18 23:49:03 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/10/03 18:21:17 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
     while(*s2)
         *temp++ = *s2++;
     *temp = '\0';
+    
     return (space);
 }
