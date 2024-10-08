@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 19:43:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/10/03 18:21:17 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/10/07 20:49:33 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char *ft_strdup(const char *s1)
         str[i] = s1[i];
         i++;
     }
-    str[i] = '\n';
+    str[i] = '\0';
     return str;
 }
 
@@ -81,23 +81,52 @@ char *ft_substr(char const *s, unsigned int start, size_t len)
     return substr;
 }
 
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+//     size_t all_len;
+//     char *space;
+//     char *temp;
+
+//     all_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+//     space = (char *)malloc(all_len);
+    
+//     temp = space;
+//     if (!space)
+//         return NULL;
+//     while(*s1)
+//         *temp++ = *s1++;
+//     while(*s2)
+//         *temp++ = *s2++;
+//     *temp = '\0';
+    
+//     return (space);
+// }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-    size_t all_len;
-    char *space;
+    size_t len1, len2;
+    char *result;
     char *temp;
 
-    all_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-    space = (char *)malloc(all_len);
-    
-    temp = space;
-    if (!space)
+    if (!s1 && !s2)
         return NULL;
-    while(*s1)
+    if (!s1)
+        return ft_strdup(s2);
+    if (!s2)
+        return ft_strdup(s1);
+
+    len1 = ft_strlen(s1);
+    len2 = ft_strlen(s2);
+    result = (char *)malloc(len1 + len2 + 1);
+    if (!result)
+        return NULL;
+
+    temp = result;
+    while (*s1)
         *temp++ = *s1++;
-    while(*s2)
+    while (*s2)
         *temp++ = *s2++;
     *temp = '\0';
-    
-    return (space);
+
+    return result;
 }

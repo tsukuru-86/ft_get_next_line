@@ -6,11 +6,12 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:14:49 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/10/03 18:49:10 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/10/08 15:14:48 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
 
 static char	*ft_read_to_leftover(int fd, char *leftover)
 {
@@ -22,13 +23,11 @@ static char	*ft_read_to_leftover(int fd, char *leftover)
     if (!buff)
         return NULL;
     read_bytes = 1;
-    while(!ft_strchr(leftover, '\n') && read_bytes != 0)
-    {
+    while((!leftover || !ft_strchr(leftover, '\n')) && read_bytes > 0){
         read_bytes = read(fd, buff, BUFFER_SIZE);
-        if (read_bytes == -1)
+        if (read_bytes <= 0)
         {
-            free (buff);
-            return NULL;
+            break;
         }
         buff[read_bytes] = '\0';
         
@@ -37,11 +36,62 @@ static char	*ft_read_to_leftover(int fd, char *leftover)
             free(buff);
             return NULL;
         }
-        free(leftover);
+        if (leftover)
+            free(leftover);
         leftover = temp;
     }
     free(buff);
     return (leftover);
+}
+
+char *ft_get_line(char *leftover)
+{
+    int i = 0;
+    char *line;
+
+    if(!leftover)
+        return NULL;
+
+    while(leftover[i] && leftover[i] != '\n')
+        i++;
+
+    line = (char *)malloc(sizeof(char) * (i + 2));
+    if(!line)
+        return NULL;
+    
+    i = 0;
+    while(leftover[i] && leftover[i] != '\n'){       
+        line[i] = leftover[i];
+        i++;
+    }
+    if(leftover[i] == '\n'){
+        line[i] = leftover[i];
+        i++;
+    }
+    line[i] = '\0';
+    return line;
+}
+
+static char *ft_new_leftover(char *leftover){
+    int i = 0;
+    int j = 0;
+    char *new_leftover = NULL;
+
+    if (!leftover){
+        // free(leftover);
+        return NULL;        
+    }
+    while (leftover[i] && leftover[i] != '\n')
+        i++;
+    new_leftover = (char *)malloc(sizeof(char) * (ft_strlen(leftover) - i));
+    if(!new_leftover)
+        return NULL;
+    i++;
+    while (leftover[i])
+        new_leftover[j++] = leftover[i++];
+    new_leftover[j] = '\0';
+    free(leftover);
+    return new_leftover;
 }
 
 char *get_next_line(int fd)
@@ -49,15 +99,18 @@ char *get_next_line(int fd)
     static char *leftover;
     char *line;
 
-    if (fd < 0)
+    //if (fd < 0 || BUFFER_SIZE <= 0 || fd >= MAX_FD)
+    if (fd < 0 || BUFFER_SIZE <= 0)
         return (NULL);
 
     leftover = ft_read_to_leftover(fd, leftover);
+    printf("read_to_leftover：%s\n", leftover);
     if (!leftover)
         return (NULL);
 
-    line = 1行を確保する関数
-    leftover = leftoverの更新
+    line = ft_get_line(leftover);
+    printf("ft_get_line：%s", line);
+    leftover = ft_new_leftover(leftover);
+    printf("ft_new_leftover：%s\n", leftover);
     return (line);
 }
-
