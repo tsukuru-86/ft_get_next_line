@@ -9,7 +9,7 @@
 int main()
 {
     int fd;
-    // char *line;
+    char *line;
     int line_count = 0;
 
     // テスト用ファイルを開く
@@ -20,19 +20,19 @@ int main()
         return 1;
     }
 
-    printf("lineの出力は%s\n", get_next_line(fd));
-    printf("lineの出力は%s\n", get_next_line(fd));
-    printf("lineの出力は%s\n", get_next_line(fd));
-    printf("lineの出力は%s\n", get_next_line(fd));
-    printf("lineの出力は%s\n", get_next_line(fd));
+    // printf("lineの出力は%s\n", get_next_line(fd));
+    // printf("lineの出力は%s\n", get_next_line(fd));
+    // printf("lineの出力は%s\n", get_next_line(fd));
+    // printf("lineの出力は%s\n", get_next_line(fd));
+    // printf("lineの出力は%s\n", get_next_line(fd));
 
 
-    // // get_next_lineを使用してファイルを1行ずつ読み込む
-    // while ((line = get_next_line(fd)) != NULL)
-    // {
-    //     printf("行 %d: %s", ++line_count, line);
-    //     free(line);
-    // }
+    // get_next_lineを使用してファイルを1行ずつ読み込む
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("行 %d: %s", ++line_count, line);
+        free(line);
+    }
 
     // ファイルを閉じる
     close(fd);

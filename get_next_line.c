@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 17:14:49 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/10/08 15:14:48 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/10/08 16:52:14 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,12 @@ char *get_next_line(int fd)
         return (NULL);
 
     leftover = ft_read_to_leftover(fd, leftover);
-    printf("read_to_leftover：%s\n", leftover);
-    if (!leftover)
-        return (NULL);
-
+    if (!leftover || leftover[0] == '\0'){
+        free(leftover);
+        leftover = NULL;
+        return (NULL);        
+    }
     line = ft_get_line(leftover);
-    printf("ft_get_line：%s", line);
     leftover = ft_new_leftover(leftover);
-    printf("ft_new_leftover：%s\n", leftover);
     return (line);
 }
