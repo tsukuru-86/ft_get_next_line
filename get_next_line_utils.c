@@ -40,6 +40,14 @@ char	*ft_strdup(const char *s1)
 	char	*str;
 	size_t	i;
 
+	if (!s1)
+	{
+		str = (char *)malloc(1);
+		if (!str)
+			return (NULL);
+		str[0] = '\0';
+		return (str);
+	}
 	i = 0;
 	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!str)
